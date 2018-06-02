@@ -34,7 +34,7 @@ const {
 } = createPromisifyAction();
 
 // Note: this API requires redux@>=3.1.0
-const store = createStore(rootReducer, applyMiddleware(thunk));
+const store = createStore(rootReducer, applyMiddleware(middleware));
 
 export { promisifyAction };
 ```
