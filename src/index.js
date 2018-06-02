@@ -25,7 +25,7 @@ type PromisifyResult<S, A> = {
   middleware: Middleware<S, A, any>,
 };
 
-export function createPromisifyMiddleware<S, A>(options: MiddlewareOptions): PromisifyResult<S, A> {
+export function createPromisifyMiddleware<S, A>(options: MiddlewareOptions = {}): PromisifyResult<S, A> {
   const { actionType = PROMISIFY_ACTION } = options;
 
   let observers: Array<Observer<A>> = [];
