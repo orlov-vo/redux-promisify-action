@@ -41,7 +41,7 @@ export { promisifyAction };
 
 ## Using
 
-After installing, you can promisify you actions:
+After installing, you can promisify you actions. This code below you can run in [REPL.it](https://repl.it/@orlov_vo/redux-promisify-action)
 
 ```js
 import { promisifyAction } from "./store";
