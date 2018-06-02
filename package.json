@@ -19,17 +19,33 @@
   "module": "dist/redux-promisify-action.esm.js",
   "scripts": {
     "build": "rollup -c",
+    "fmt": "prettier --write \"*.js\" \"src/**/*.js\"",
+    "precommit": "lint-staged",
     "prepare": "npm run build"
   },
   "files": [
     "dist"
   ],
+  "lint-staged": {
+    "linters": {
+      "*.js": [
+        "prettier --write",
+        "git add"
+      ]
+    },
+    "ignore": [
+      "flow-typed/**/*"
+    ]
+  },
   "devDependencies": {
     "@babel/core": "^7.0.0-beta.49",
     "@babel/polyfill": "^7.0.0-beta.49",
     "@babel/preset-env": "^7.0.0-beta.49",
     "@babel/preset-flow": "^7.0.0-beta.49",
     "flow-bin": "^0.73.0",
+    "husky": "^0.14.3",
+    "lint-staged": "^7.1.3",
+    "prettier": "^1.13.4",
     "rollup": "^0.59.4",
     "rollup-plugin-babel": "^4.0.0-beta.4",
     "rollup-plugin-commonjs": "9.1.3",
