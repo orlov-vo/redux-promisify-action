@@ -25,18 +25,14 @@ Then, to enable Redux Promisify Action, use
 
 ```js
 import { createStore, applyMiddleware } from "redux";
-import createPromisifyAction from "redux-promisify-action";
+import promisifyActionMiddleware from "redux-promisify-action";
 import rootReducer from "./reducers/index";
 
-const {
-  promisifyAction,
-  middleware: promisifyActionMiddleware
-} = createPromisifyAction();
-
 // Note: this API requires redux@>=3.1.0
-const store = createStore(rootReducer, applyMiddleware(middleware));
-
-export { promisifyAction };
+const store = createStore(
+  rootReducer,
+  applyMiddleware(promisifyActionMiddleware)
+);
 ```
 
 ## Using
@@ -44,7 +40,7 @@ export { promisifyAction };
 After installing, you can promisify you actions. This code below you can run in [REPL.it](https://repl.it/@orlov_vo/redux-promisify-action)
 
 ```js
-import { promisifyAction } from "./store";
+import { promisifyAction } from "redux-promisify-action";
 
 // For example you have this action creator:
 //
@@ -79,8 +75,43 @@ dispatch(createSomeAction()).then(
     // It will be executed after dispatch action with type "SOME_ACTION_ERROR"
   }
 );
+```
 
-//
+## Advance examples
+
+You can configure middleware by `createPromisifyAction`:
+
+```js
+import { createStore, applyMiddleware } from "redux";
+import { createMiddleware } from "redux-promisify-action";
+import rootReducer from "./reducers/index";
+
+const { promisifyAction, middleware } = createMiddleware({
+  actionType: "MY_PROMISIFY_ACTION_TYPE"
+});
+
+// Note: this API requires redux@>=3.1.0
+const store = createStore(rootReducer, applyMiddleware(middleware));
+
+function createSomeAction() {
+  return promisifyAction({
+    action: {
+      type: "SOME_ACTION",
+      payload: "foo"
+    },
+    resolveOn: "SOME_ACTION_SUCCESS",
+    rejectOn: "SOME_ACTION_ERROR" // it is not required option
+  });
+}
+
+dispatch(createSomeAction()).then(
+  successAction => {
+    // It will be executed after dispatch action with type "SOME_ACTION_SUCCESS"
+  },
+  rejectAction => {
+    // It will be executed after dispatch action with type "SOME_ACTION_ERROR"
+  }
+);
 ```
 
 ## License

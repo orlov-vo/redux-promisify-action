@@ -1,7 +1,7 @@
 // @flow
 import type { Middleware } from "redux";
 
-export const PROMISIFY_ACTION = "PROMISIFY_ACTION";
+export const PROMISIFY_ACTION = "@@PROMISIFY_ACTION";
 
 type PromisifyActionPayload<A> = {
   action: A,
@@ -25,7 +25,7 @@ type PromisifyResult<S, A> = {
   middleware: Middleware<S, A, any>
 };
 
-export function createPromisifyMiddleware<S, A>(
+export function createMiddleware<S, A>(
   options: MiddlewareOptions = {}
 ): PromisifyResult<S, A> {
   const { actionType = PROMISIFY_ACTION } = options;
@@ -44,6 +44,10 @@ export function createPromisifyMiddleware<S, A>(
       action.type === actionType
     ) {
       const { payload }: { payload: PromisifyActionPayload<A> } = action;
+
+      if (!payload) {
+        throw new TypeError(`Empty payload in action "${actionType}"!`);
+      }
 
       dispatch(payload.action);
 
@@ -105,4 +109,8 @@ function applyFunctionToActionByPredicate<A>(
   return false;
 }
 
-export default createPromisifyMiddleware;
+const { promisifyAction, middleware } = createMiddleware();
+
+export { promisifyAction };
+
+export default middleware;
