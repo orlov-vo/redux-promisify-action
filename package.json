@@ -1,6 +1,6 @@
 {
   "name": "redux-promisify-action",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "license": "MIT",
   "description": "Primisify action middleware for Redux",
   "repository": "github:orlov-vo/redux-promisify-action",
