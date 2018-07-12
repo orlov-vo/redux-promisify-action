@@ -1,4 +1,5 @@
 // @flow
+import { isError } from "flux-standard-action";
 import type { Middleware } from "redux";
 
 export const PROMISIFY_ACTION = "@@PROMISIFY_ACTION";
@@ -69,7 +70,12 @@ export function createMiddleware<S, A>(
     observers = observers.filter(
       ({ resolveOn, resolve, rejectOn, reject }) =>
         applyFunctionToActionByPredicate(resolve, action, resolveOn) ||
-        (rejectOn && applyFunctionToActionByPredicate(reject, action, rejectOn))
+        (rejectOn &&
+          applyFunctionToActionByPredicate(
+            reject,
+            isError(action) ? action.payload : action,
+            rejectOn
+          ))
     );
 
     return next(action);
