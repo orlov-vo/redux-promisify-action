@@ -70,12 +70,7 @@ export function createMiddleware<S, A>(
     observers = observers.filter(
       ({ resolveOn, resolve, rejectOn, reject }) =>
         applyFunctionToActionByPredicate(resolve, action, resolveOn) ||
-        (rejectOn &&
-          applyFunctionToActionByPredicate(
-            reject,
-            isError(action) ? action.payload : action,
-            rejectOn
-          ))
+        (rejectOn && applyFunctionToActionByPredicate(reject, action, rejectOn))
     );
 
     return next(action);
@@ -95,7 +90,7 @@ function applyFunctionToActionByPredicate<A>(
   switch (typeof predicate) {
     case "string": {
       if (action && action.type === predicate) {
-        func(action);
+        func(isError(action) ? action.payload : action);
         return true;
       }
       break;
@@ -103,7 +98,7 @@ function applyFunctionToActionByPredicate<A>(
 
     case "function": {
       if (predicate(action)) {
-        func(action);
+        func(isError(action) ? action.payload : action);
         return true;
       }
       break;
