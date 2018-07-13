@@ -69,8 +69,11 @@ export function createMiddleware<S, A>(
 
     observers = observers.filter(
       ({ resolveOn, resolve, rejectOn, reject }) =>
-        applyFunctionToActionByPredicate(resolve, action, resolveOn) ||
-        (rejectOn && applyFunctionToActionByPredicate(reject, action, rejectOn))
+        !(
+          applyFunctionToActionByPredicate(resolve, action, resolveOn) ||
+          (rejectOn &&
+            applyFunctionToActionByPredicate(reject, action, rejectOn))
+        )
     );
 
     return next(action);
